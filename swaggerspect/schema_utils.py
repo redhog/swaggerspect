@@ -16,10 +16,14 @@ def remove_empty(obj):
 
 def remove_hidden(api):
     api = dict(api)
-    api["properties"] = {
-        key: value
-        for key, value in api["properties"].items()
-        if not value.get("hide", False)}
+    if "properties" in api:
+        api["properties"] = {
+            key: value
+            for key, value in api["properties"].items()
+            if not value.get("hide", False)}
     if "propertyOrder" in api:
-        api["propertyOrder"] = [prop for prop in api["propertyOrder"] if prop in api["properties"]]
+        if "properties" in api:
+            api["propertyOrder"] = [prop for prop in api["propertyOrder"] if prop in api["properties"]]
+        else:
+            del api["propertyOrder"]
     return api
